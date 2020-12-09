@@ -21,8 +21,12 @@ public class AccountRealm extends AuthorizingRealm {
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
+        // 把AuthenticationToken转换为UsernamePasswordToken
         UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
-        Account account = accountService.findByName(token.getUsername());
+        // 从UsernamePasswordToken中获取username
+        String username = token.getUsername();
+        // 调用数据库查询username对应的记录
+        Account account = accountService.findByName(username);
         if (account != null) {
             return new SimpleAuthenticationInfo(account, account.getPassword(), getName());
         }

@@ -23,10 +23,10 @@ public class AccountController {
     @RequestMapping("/login")
     public String redirect(String username, String password, Model model) {
         Subject subject = SecurityUtils.getSubject();
-        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(username, password);
+        UsernamePasswordToken token = new UsernamePasswordToken(username, password);
         try {
             // 登录验证
-            subject.login(usernamePasswordToken);
+            subject.login(token);
 
             // 设置session
             Account account = (Account) subject.getPrincipal();
@@ -37,6 +37,10 @@ public class AccountController {
             model.addAttribute("msg", "用户名错误");
             return "login";
         } catch (IncorrectCredentialsException e) {
+            e.printStackTrace();
+            model.addAttribute("msg", "密码错误");
+            return "login";
+        } catch (Exception e) {
             e.printStackTrace();
             model.addAttribute("msg", "密码错误");
             return "login";
