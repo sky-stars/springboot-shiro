@@ -18,14 +18,19 @@ public class ShiroConfig {
     public ShiroFilterFactoryBean shiroFilterFactoryBean(@Qualifier("securityManager") DefaultWebSecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
-        // 权限
+
+        // 设置页面访问权限
         Map<String, String> map = new Hashtable<>();
         map.put("/main", "authc");
         map.put("/manager", "perms[manager]");
         map.put("/administrator", "roles[administrator]");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(map);
 
+        // 设置登录返回页面
         shiroFilterFactoryBean.setLoginUrl("/login");
+
+        // 设置未授权提示
+        shiroFilterFactoryBean.setUnauthorizedUrl("/unauth");
         return shiroFilterFactoryBean;
     }
 

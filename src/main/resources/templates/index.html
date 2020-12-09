@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>index</title>
@@ -7,10 +7,13 @@
 
 </head>
 <body>
-
-<a href="/main">main</a>
-<a href="/manager">manager</a>
-<a href="/administrator">administrator</a>
+<h1>index</h1>
+<div th:if="${session.account !=null}">
+    <span th:text="${session.account.name}+登录成功"></span><a href="/logout">退出登录</a>
+</div>
+<a href="/main">主页面</a>
+<a href="/manager">管理员</a>
+<a href="/administrator">超级管理员</a>
 
 </body>
 </html>

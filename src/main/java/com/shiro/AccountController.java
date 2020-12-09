@@ -1,5 +1,6 @@
 package com.shiro;
 
+import com.shiro.entity.Account;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class AccountController {
@@ -23,7 +25,12 @@ public class AccountController {
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(username, password);
         try {
+            // 登录验证
             subject.login(usernamePasswordToken);
+
+            // 设置session
+            Account account = (Account) subject.getPrincipal();
+            subject.getSession().setAttribute("account", account);
             return "index";
         } catch (UnknownAccountException e) {
             e.printStackTrace();
@@ -35,5 +42,18 @@ public class AccountController {
             return "login";
         }
 
+    }
+
+    @RequestMapping("/unauth")
+    @ResponseBody
+    public String unauth() {
+        return "未授权，无法访问！";
+    }
+
+    @RequestMapping("/logout")
+    public String logout() {
+        Subject subject = SecurityUtils.getSubject();
+        subject.logout();
+        return "login";
     }
 }
