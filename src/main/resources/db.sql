@@ -11,7 +11,7 @@
  Target Server Version : 80012
  File Encoding         : 65001
 
- Date: 10/12/2020 01:53:16
+ Date: 13/12/2020 23:54:01
 */
 
 SET NAMES utf8mb4;
@@ -33,9 +33,9 @@ CREATE TABLE `account`  (
 -- ----------------------------
 -- Records of account
 -- ----------------------------
-INSERT INTO `account` VALUES (1, 'admin', 'admin', 'administrator', 'manager');
-INSERT INTO `account` VALUES (2, 'manager', 'manager', NULL, 'manager');
+INSERT INTO `account` VALUES (1, 'admin', 'admin', 'administrator', 'page:view');
+INSERT INTO `account` VALUES (2, 'manager', 'manager', NULL, 'page:view');
 INSERT INTO `account` VALUES (3, 'normal', 'normal', NULL, NULL);
-INSERT INTO `account` VALUES (4, 'admin1', 'e10adc3949ba59abbe56e057f20f883e', 'administrator', 'manager');
+INSERT INTO `account` VALUES (4, 'admin1', 'e10adc3949ba59abbe56e057f20f883e', 'administrator', 'page:view');
 
 SET FOREIGN_KEY_CHECKS = 1;
