@@ -25,6 +25,9 @@ public class AccountController {
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken token = new UsernamePasswordToken(username, password);
         try {
+
+            // 记住我
+            token.setRememberMe(true);
             // 登录验证
             subject.login(token);
 

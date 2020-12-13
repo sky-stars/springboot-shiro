@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 
@@ -22,20 +21,17 @@ public class ShiroConfig {
 
         // 设置页面访问权限
         Map<String, String> map = new Hashtable<>();
-        // 无需授权
-        map.put("/*", "authc");
-
-        // authc需要登录授权
+        // 无需登录授权
+        map.put("/*", "anon");
+        // 需要登录授权
         map.put("/main", "authc");
-        // 需要url访问权限
-        map.put("/manager", "perms[manager]");
         // 需要角色权限
         map.put("/administrator", "roles[administrator]");
+        // 需要功能权限
+        map.put("/manager", "perms[manager:view]");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(map);
-
         // 设置登录返回页面
         shiroFilterFactoryBean.setLoginUrl("/login");
-
         // 设置未授权提示
         shiroFilterFactoryBean.setUnauthorizedUrl("/unauth");
         return shiroFilterFactoryBean;
@@ -49,6 +45,19 @@ public class ShiroConfig {
         return manager;
     }
 
+
+    /*@Bean
+    public AccountRealm accountRealm() {
+        return new AccountRealm();
+    }*/
+
+
+    @Bean
+    public AccountRealm accountRealm(@Qualifier("hashedCredentialsMatcher") HashedCredentialsMatcher matcher) {
+        AccountRealm authRealm = new AccountRealm();
+        authRealm.setCredentialsMatcher(matcher);
+        return authRealm;
+    }
 
     /**
      * 密码校验规则HashedCredentialsMatcher
@@ -68,12 +77,4 @@ public class ShiroConfig {
         credentialsMatcher.setStoredCredentialsHexEncoded(true);
         return credentialsMatcher;
     }
-
-    @Bean
-    public AccountRealm accountRealm(@Qualifier("hashedCredentialsMatcher") HashedCredentialsMatcher matcher) {
-        AccountRealm authRealm = new AccountRealm();
-        authRealm.setCredentialsMatcher(matcher);
-        return authRealm;
-    }
-
 }
