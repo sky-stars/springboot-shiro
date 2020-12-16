@@ -22,6 +22,7 @@ public class AccountController {
 
     @RequestMapping("/login")
     public String redirect(String username, String password, Model model) {
+        // 获取subject
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken token = new UsernamePasswordToken(username, password);
         try {

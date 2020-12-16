@@ -1,7 +1,6 @@
 package com.shiro.config;
 
 import com.shiro.realms.AccountRealm;
-import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -18,17 +17,16 @@ public class ShiroConfig {
     public ShiroFilterFactoryBean shiroFilterFactoryBean(@Qualifier("securityManager") DefaultWebSecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
-
         // 设置页面访问权限
         Map<String, String> map = new Hashtable<>();
         // 无需登录授权
-        map.put("/*", "anon");
+        // map.put("/*", "anon");
         // 需要登录授权
         map.put("/main", "authc");
         // 需要角色权限
-        map.put("/administrator", "roles[administrator]");
+        map.put("/manager", "roles[manager]");
         // 需要功能权限
-        map.put("/manager", "perms[manager:view]");
+        map.put("/administrator", "perms[admin:view]");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(map);
         // 设置登录返回页面
         shiroFilterFactoryBean.setLoginUrl("/login");
@@ -46,26 +44,26 @@ public class ShiroConfig {
     }
 
 
-    /*@Bean
+    @Bean
     public AccountRealm accountRealm() {
         return new AccountRealm();
-    }*/
+    }
 
 
-    @Bean
+    /*@Bean
     public AccountRealm accountRealm(@Qualifier("hashedCredentialsMatcher") HashedCredentialsMatcher matcher) {
         AccountRealm authRealm = new AccountRealm();
         authRealm.setCredentialsMatcher(matcher);
         return authRealm;
     }
 
-    /**
+    *//**
      * 密码校验规则HashedCredentialsMatcher
      * 这个类是为了对密码进行编码的 ,
      * 防止密码在数据库里明码保存 , 当然在登陆认证的时候 ,
      * 这个类也负责对form里输入的密码进行编码
      * 处理认证匹配处理器：如果自定义需要实现继承HashedCredentialsMatcher
-     */
+     *//*
     @Bean("hashedCredentialsMatcher")
     public HashedCredentialsMatcher hashedCredentialsMatcher() {
         HashedCredentialsMatcher credentialsMatcher = new HashedCredentialsMatcher();
@@ -76,5 +74,5 @@ public class ShiroConfig {
         // storedCredentialsHexEncoded默认是true，此时用的是密码加密用的是Hex编码；false时用Base64编码
         credentialsMatcher.setStoredCredentialsHexEncoded(true);
         return credentialsMatcher;
-    }
+    }*/
 }

@@ -35,17 +35,17 @@ public class AccountRealm extends AuthorizingRealm {
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-
+        // 获取当前用户
         Subject subject = SecurityUtils.getSubject();
         Account account = (Account) subject.getPrincipal();
 
+        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+        // 设置权限
         Set<String> roles = new HashSet<>();
         roles.add(account.getRoles());
-        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-
-        // 设置角色访问权限
+        // 设置角色
         info.setRoles(roles);
-        // 设置url访问权限
+        // 设置权限
         info.addStringPermission(account.getPerms());
 
         return info;

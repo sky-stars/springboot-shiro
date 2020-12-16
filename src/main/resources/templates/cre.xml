@@ -1,0 +1,19 @@
+<web-app>
+
+
+
+
+    <!--配置一个密码的匹配器-->
+    <!--创建凭证匹配器-->
+    <bean id="credentialsMatcher" class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+        <!--指定加密算法-->
+        <property name="hashAlgorithmName" value="md5"/>
+        <!--指定加密的次数-->
+        <property name="hashIterations" value="1024"/>
+    </bean>
+
+    <bean id="authRealm" class="com.shiro.realms.AccountRealm">
+        <property name="credentialsMatcher" ref="credentialsMatcher"/>
+    </bean>
+
+</web-app>

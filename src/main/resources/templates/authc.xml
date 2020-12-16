@@ -1,0 +1,27 @@
+<web-app>
+    <bean id="shiroFilterFactoryBean" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <!-- 注入安全管理器 -->
+        <property name="securityManager" ref="securityManager"></property>
+        <!-- 权限认证的页面,登录页面 -->
+        <property name="loginUrl" value="/login.html"></property>
+        <!-- 权限认证成功以后要跳转的页面 -->
+        <property name="successUrl" value="/index.html"></property>
+        <!-- 权限不足要跳转的页面只对拦截器生效,不会注解方式生效 -->
+        <property name="unauthorizedUrl" value="/unauth.html"></property>
+        <!--指定拦截的规则 -->
+        <property name="filterChainDefinitions">
+            <value>
+                /admins/**=anon
+                /admins/user/**=authc
+                /admins/user/**=user
+                /manager = roles[manager]
+                /administrator = perms["admin:delete"]
+            </value>
+        </property>
+    </bean>
+    <!-- 注册安全管理器 -->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <!-- 注入realm -->
+        <property name="realm" ref="accountRealm"/>
+    </bean>
+</web-app>
